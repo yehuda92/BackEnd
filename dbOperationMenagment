@@ -1,0 +1,86 @@
+var config = require('./dbConfig');
+const sql = require('mssql');
+const bcrypt = require('bcrypt');
+const { password } = require('./dbConfig');
+
+async function addcatgory (catgory) {
+    console.log(catgory)
+    try{
+        let pool = await sql.connect(config);
+        const insert = await pool.request()
+
+        .input('catgory',sql.NVarChar,catgory.catgory)
+        .execute('[dbo].[addCatgory]');
+        return insert.recordset[0];  
+     }
+    catch (error) {
+        console.log(error);
+       }
+}
+
+async function addtype (type) {
+    console.log(type)
+    try{
+        let pool = await sql.connect(config);
+        const insert = await pool.request()
+
+        .input('type',sql.NVarChar,type.type)
+        .execute('[dbo].[addType]');
+        return insert.recordset[0];  
+     }
+    catch (error) {
+        console.log(error);
+       }
+}
+
+async function addsize (size) {
+    try{
+        let pool = await sql.connect(config);
+        const insert = await pool.request()
+
+        .input('size',sql.NVarChar,size.size)
+        .execute('[dbo].[addSize]');
+        return insert.recordset[0];  
+     }
+    catch (error) {
+        console.log(error);
+       }
+}
+
+
+
+async function getUsers () {
+    try{
+        let pool = await sql.connect(config);
+        let users = await pool.request().query("select * from [dbo].[users]");
+        return users.recordsets;
+    }
+    catch (error) {
+        console.log(error);
+    }
+}
+
+
+async function addAdmin (userID) {
+
+    try{
+        let pool = await sql.connect(config);
+        const insert = await pool.request()
+
+        .input('userID',sql.NVarChar,userID.userID)
+        .execute('[dbo].[addAdmin]');
+        return insert.recordset;  
+     }
+    catch (error) {
+        console.log(error);
+       } 
+}
+
+module.exports = {
+
+    addcatgory: addcatgory,
+    addtype: addtype,
+    addsize: addsize,
+    getUsers: getUsers,
+    addAdmin: addAdmin
+}
