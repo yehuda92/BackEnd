@@ -1,2 +1,1 @@
-# my-server
-test git in github
+# my-server-ecological-fashion
